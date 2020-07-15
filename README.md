@@ -56,7 +56,7 @@ createdb test
 
 ##Demo the Project
 ###Import Data
-The data are store in `./data`. The TPC-H datasets are stored in `./data/TPCH`, where we provide 7 datasets with different scales: `0.01, 0.05, 0.1, 0.5, 1, 5, 10`. As space limitation, we only upload the dataset with scale `0.01, 0.05, 0.1`. The others are avaliable [here](https://drive.google.com/file/d/1DdFp7jQK1gt8VLUhrv0H4YrvpjcDCiDI/view?usp=sharing). The TPC-H data are used by query Q1$\sim$Q3. The Facebook ego-network dataset is stored in `./data/Facebook` and is used by query Q4$\sim$Q8.
+The data are store in `./data`. The TPC-H datasets are stored in `./data/TPCH`, where we provide 7 datasets with different scales: `0.01, 0.05, 0.1, 0.5, 1, 5, 10`. As space limitation, we only upload the dataset with scale `0.01, 0.05, 0.1`. The others are avaliable [here](https://drive.google.com/file/d/1DdFp7jQK1gt8VLUhrv0H4YrvpjcDCiDI/view?usp=sharing). The TPC-H data are used by query Q1 to Q3. The Facebook ego-network dataset is stored in `./data/Facebook` and is used by query Q4 to Q8.
 
 To import data into postgresql database, change the working directory to `./code` and run `ImportDataToDB.py`, which has three arguments: `-D` indicates the database name, `-d` indicates dataset name, `-s` indicates the dataset scale. Use `-h` to check the details. For example, use below commands to import TPC-H dataset with scale 0.01 into database `test`.
 
