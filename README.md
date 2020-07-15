@@ -54,8 +54,8 @@ Create an empty postgresql database. For example, create a database named as `te
 createdb test
 ```
 
-##Demo the Project
-###Import Data
+## Demo the Project
+### Import Data
 The data are store in `./data`. The TPC-H datasets are stored in `./data/TPCH`, where we provide 7 datasets with different scales: `0.01, 0.05, 0.1, 0.5, 1, 5, 10`. As space limitation, we only upload the dataset with scale `0.01, 0.05, 0.1`. The others are avaliable [here](https://drive.google.com/file/d/1DdFp7jQK1gt8VLUhrv0H4YrvpjcDCiDI/view?usp=sharing). The TPC-H data are used by query Q1 to Q3. The Facebook ego-network dataset is stored in `./data/Facebook` and is used by query Q4 to Q8.
 
 To import data into postgresql database, change the working directory to `./code` and run `ImportDataToDB.py`, which has three arguments: `-D` indicates the database name, `-d` indicates dataset name, `-s` indicates the dataset scale. Use `-h` to check the details. For example, use below commands to import TPC-H dataset with scale 0.01 into database `test`.
@@ -65,7 +65,7 @@ cd ./code
 python ImportDataToDB.py -s 0.01 -D test -d TPCH
 ```
 
-###Export Data
+### Export Data
 To export dataset from postgresql database, change the working directory to `./code` and run `ExportDataFromDB.py`, which has two arguments: `-D` indicates the database name, `-d` indicates dataset name. For example, use below commands to export TPC-H dataset from database `test`.
 ```sh
 cd ./code
@@ -98,7 +98,7 @@ python Collectmf.py -D test -s 0.01 -Q 1
 python ComputeES.py -s 0.01 -Q 1 -B 0.01
 ```
 
-##Collect Statistic for Table 1
+## Collect Statistic for Table 1
 The statistic involved in table 1 is divided into two parts: values of residual sensitivity and elastic sensitivity and running time of algorithms of residual sensitivity and elastic sensitivity.
 
 * To collect the statistic related to the value, change the working directory to `./code` and run the `CollectTE.py`.
@@ -113,14 +113,14 @@ cd ./code
 python CompareRunningTime.py
 ```
 
-##Draw Figure 5
+## Draw Figure 5
 To draw figure 5, change the working directory to `./code` and run `DrawFig5Graphs.py`.
 ```sh
 cd ./code
 python DrawFig5Graphs.py
 ```
 
-##Draw Figure 6
+## Draw Figure 6
 To draw figure 6, change the working directory to `./code` and run `DrawFig6Graphs.py`.
 ```sh
 cd ./code
