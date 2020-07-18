@@ -17,7 +17,7 @@
     
 
 ## About The Project
-We implement the algorithms to get residual sensitivity and elastic sensitivity for multi-way join query and we demo our implementations on 8 experimental queries shown in our paper. Here, two datasets: TPC-H dataset and Facebook ego-network dataset are provided. The algorithm to calculate residual sensitivity/elastic sensitivity contains two parts: collecting required TE's(mf's) and computing residual sensitivity/elstic sensitivity based on the collected information. Here we provide codes to realize three main functions:
+We implement the algorithms to get residual sensitivity and elastic sensitivity for multi-way join query and we demo our implementations on 8 experimental queries as shown in our paper. Here, two datasets: TPC-H dataset and Facebook ego-network dataset are used. Here we provide codes to realize three main functions:
 
 + Import/Export data to/from database;
 + Demo the algorithm to compute residual sensitivity/elastic sensitivity given one query;
