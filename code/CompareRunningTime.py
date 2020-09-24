@@ -23,11 +23,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hD:",["Database="])
     except getopt.GetoptError:
-        print("CompareRunningTime.py -D <Databse name>")
+        print("CompareRunningTime.py -D <Database name>")
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print("Compare -D <Databse name>")
+            print("Compare -D <Database name>")
             sys.exit()
         elif opt in ("-D","--Database"):
             database_name = arg

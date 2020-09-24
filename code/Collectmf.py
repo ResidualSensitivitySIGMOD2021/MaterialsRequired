@@ -127,7 +127,7 @@ def main(argv):
             sys.exit()
         elif opt in ("-Q", "--Query"):
             query_id = arg
-        elif opt in ("-s", "--cale"):
+        elif opt in ("-s", "--scale"):
             scale = arg
         elif opt in ("-D","--Database"):
             database_name = arg

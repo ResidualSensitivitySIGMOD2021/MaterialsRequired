@@ -20,7 +20,7 @@ def main(argv):
         if opt == '-h':
             print("ComputeRS.py -s <scale:0.01/0.05/.../10> -Q <Query ID:1/2/../8> -B <Beta>")
             sys.exit()
-        elif opt in ("-s", "--cale"):
+        elif opt in ("-s", "--scale"):
             scale = arg
         elif opt in ("-Q", "--Query"):
             query_id = arg
@@ -44,7 +44,7 @@ def main(argv):
         if scale=="0.5":
             scale_t = "_0_5"
         if scale=="1":
-            scale_t ="_5"
+            scale_t ="_1"
         if scale=="5":
             scale_t = "_5"
         if scale=="10":

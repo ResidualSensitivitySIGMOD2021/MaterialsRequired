@@ -43,7 +43,7 @@ def main(argv):
         if scale=="0.5":
             scale_t = "_0_5"
         if scale=="1":
-            scale_t ="_5"
+            scale_t ="_1"
         if scale=="5":
             scale_t = "_5"
         if scale=="10":
