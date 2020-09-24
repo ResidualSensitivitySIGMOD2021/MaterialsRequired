@@ -1,0 +1,10 @@
+create table R6_w as select A, B, C, 1 as weight from R6;
+create table edge3_w as select edge3_from, edge3_to, 1 as weight from edge3;
+create table edge4_w as select edge4_from, edge4_to, 1 as weight from edge4;
+create table edge5_w as select edge5_from, edge5_to, 1 as weight from edge5;
+create table keyb_w1 as select edge3_to, sum(weight) as weight from edge3_w group by edge3_to;
+create table keyb_w2 as select edge4_from, sum(weight) as weight from edge4_w group by edge4_from;
+create table edge34_w as select edge3_w.edge3_from, edge3_w.edge3_to, edge4_w.edge4_to, sum(1.0*edge3_w.weight*edge4_w.weight/(keyb_w1.weight+keyb_w2.weight)) as weight from keyb_w1, keyb_w2, edge3_w, edge4_w where keyb_w1.edge3_to = keyb_w2.edge4_from and keyb_w1.edge3_to = edge4_w.edge4_from and edge4_w.edge4_from = edge3_w.edge3_to group by edge3_w.edge3_from, edge3_w.edge3_to, edge4_w.edge4_to;
+create table keyac_w as select edge3_from, edge4_to, sum(weight) as weight from edge34_w group by edge3_from, edge4_to;
+create table edge345_w as select edge34_w.edge3_from, edge34_w.edge3_to, edge34_w.edge4_to, 1.0*edge34_w.weight*edge5_w.weight/(keyac_w.weight+edge5_w.weight) as weight from edge34_w, edge5_w, keyac_w where edge34_w.edge3_from=edge5_w.edge5_to and edge34_w.edge4_to=edge5_w.edge5_from and edge34_w.edge3_from=keyac_w.edge3_from and edge34_w.edge4_to=keyac_w.edge4_to; 
+create table edge12345 as select 1.0*edge345_w.weight*R6_w.weight/(R6_w.weight+edge345_w.weight) as weight from R6_w, edge345_w where A=edge3_from and B=edge3_to and C=edge4_to;

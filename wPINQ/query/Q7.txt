@@ -1,0 +1,16 @@
+create table edge1_w as select edge1_from, edge1_to, 1 as weight from edge1;
+create table edge2_w as select edge2_from, edge2_to, 1 as weight from edge2;
+create table edge3_w as select edge3_from, edge3_to, 1 as weight from edge3;
+create table edge4_w as select edge4_from, edge4_to, 1 as weight from edge4;
+create table edge5_w as select edge5_from, edge5_to, 1 as weight from edge5;
+create table keyb_w1 as select edge1_to, sum(weight) as weight from edge1_w group by edge1_to;
+create table keyb_w2 as select edge2_from, sum(weight) as weight from edge2_w group by edge2_from;
+create table edge12_w as select edge1_from, edge2_to, sum(1.0*edge1_w.weight*edge2_w.weight/(keyb_w1.weight+keyb_w2.weight)) as weight from keyb_w1, keyb_w2, edge1_w, edge2_w where keyb_w1.edge1_to = keyb_w2.edge2_from and keyb_w1.edge1_to = edge2_w.edge2_from and edge2_w.edge2_from = edge1_w.edge1_to group by edge1_from, edge2_to;
+create table keyc_w1 as select edge2_to, sum(weight) as weight from edge12_w group by edge2_to;
+create table keyc_w2 as select edge3_from, sum(weight) as weight from edge3_w group by edge3_from;
+create table edge123_w as select edge1_from, edge3_to, sum(1.0*edge12_w.weight*edge3_w.weight/(keyc_w1.weight+keyc_w2.weight)) as weight from keyc_w1, keyc_w2, edge12_w, edge3_w where keyc_w1.edge2_to = keyc_w2.edge3_from and keyc_w1.edge2_to = edge3_w.edge3_from and edge3_w.edge3_from = edge12_w.edge2_to group by edge1_from, edge3_to;
+create table keyd_w1 as select edge3_to, sum(weight) as weight from edge123_w group by edge3_to;
+create table keyd_w2 as select edge4_from, sum(weight) as weight from edge4_w group by edge4_from;
+create table edge1234_w as select edge1_from, edge4_to, sum(1.0*edge123_w.weight*edge4_w.weight/(keyd_w1.weight+keyd_w2.weight)) as weight from keyd_w1, keyd_w2, edge123_w, edge4_w where keyd_w1.edge3_to = keyd_w2.edge4_from and keyd_w1.edge3_to = edge4_w.edge4_from and edge4_w.edge4_from = edge123_w.edge3_to group by edge1_from, edge4_to;
+create table edge12345_w as select 1.0*edge1234_w.weight*edge5_w.weight/(edge1234_w.weight+edge5_w.weight) as weight from edge1234_w, edge5_w where edge1234_w.edge1_from=edge5_w.edge5_to and edge1234_w.edge4_to=edge5_w.edge5_from;
+select sum(weight) from edge12345_w;

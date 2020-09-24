@@ -1,0 +1,14 @@
+drop table edge1_w;
+drop table edge2_w;
+drop table edge3_w;
+drop table edge4_w;
+drop table edge5_w;
+drop table keyb_w1;
+drop table keyb_w2;
+drop table keyc_w;
+drop table keyd_w;
+drop table keye_w;
+drop table edge12_w;
+drop table edge123_w;
+drop table edge1234_w;
+drop table edge12345_w;
