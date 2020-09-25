@@ -37,7 +37,7 @@ def main(argv):
     cur = con.cursor()
     for i in range(8):
         query_id = str(i+1)
-        query_path = cur_path+"/../wPINQ/Q"+query_id+".txt"
+        query_path = cur_path+"/wPINQ/Q"+query_id+".txt"
         origin_query_path = cur_path+"/../query/query_result/Q"+query_id+".sh"
         queries = open(query_path,'r')
         origin_queries = open(origin_query_path,'r')
@@ -92,7 +92,7 @@ def main(argv):
         print("The output of wPINQ is "+str(ans))
         print("The output of exact query "+str(res))
         print("The ratio between them is "+str(ans/res))
-        clean_query_path = cur_path+"/../wPINQ/Q"+query_id+"_drop.txt"
+        clean_query_path = cur_path+"/wPINQ/Q"+query_id+"_drop.txt"
         clean_queries = open(clean_query_path,'r')
         query= ""
         for line in clean_queries.readlines():
