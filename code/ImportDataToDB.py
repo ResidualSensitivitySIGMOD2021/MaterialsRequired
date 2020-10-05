@@ -13,15 +13,15 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hd:s:D:",["dataset=","scale=","Database="])
     except getopt.GetoptError:
-        print("ImportDataToDB.py -d <dataset:TPCH/Facebook> -s <scale:0.01/0.05/.../10> -D <databse name>")
+        print("ImportDataToDB.py -d <dataset:TPCH/Facebook> -s <scale:0.01/0.05/.../10> -D <database name>")
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print("ImportDataToDB.py -d <dataset:TPCH/Facebook> -s <scale:0.01/0.05/.../10> -D <databse name>")
+            print("ImportDataToDB.py -d <dataset:TPCH/Facebook> -s <scale:0.01/0.05/.../10> -D <database name>")
             sys.exit()
         elif opt in ("-d", "--dataset"):
             dataset = arg
-        elif opt in ("-s", "--cale"):
+        elif opt in ("-s", "--scale"):
             scale = arg
         elif opt in ("-D","--Database"):
             database_name = arg

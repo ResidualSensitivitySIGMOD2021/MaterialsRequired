@@ -12,11 +12,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hd:D:",["dataset=","Database="])
     except getopt.GetoptError:
-        print("ExportDataFromDB.py -d <dataset:TPCH/Facebook> -D <databse name>")
+        print("ExportDataFromDB.py -d <dataset:TPCH/Facebook> -D <database name>")
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print("ExportDataFromDB.py -d <dataset:TPCH/Facebook> -D <databse name>")
+            print("ExportDataFromDB.py -d <dataset:TPCH/Facebook> -D <database name>")
             sys.exit()
         elif opt in ("-D","--Database"):
             database_name = arg

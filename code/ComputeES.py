@@ -19,7 +19,7 @@ def main(argv):
         if opt == '-h':
             print("ComputeES.py -s <scale:0.01/0.05/.../10> -Q <Query ID:1/2/../8> -B <Beta>")
             sys.exit()
-        elif opt in ("-s", "--cale"):
+        elif opt in ("-s", "--scale"):
             scale = arg
         elif opt in ("-Q", "--Query"):
             query_id = arg

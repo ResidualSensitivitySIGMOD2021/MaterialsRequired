@@ -219,7 +219,7 @@ def SolveQ8():
     E_list.append("0011")
     E_list.append("1110")
     E_list.append("1101")
-    E_list.append("1001")
+    E_list.append("1011")
     E_list.append("0111") 
     TE_dic["0000"] = 1 
 
@@ -234,11 +234,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hD:s:Q:",["Database=","scale=","Query="])
     except getopt.GetoptError:
-        print("CollectTE.py -D <Databse name> -s <scale:0.01/0.05/.../10> -Q <Query ID:1/2/../8>")
+        print("CollectTE.py -D <Database name> -s <scale:0.01/0.05/.../10> -Q <Query ID:1/2/../8>")
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print("CollectTE.py -D <Databse name> -s <scale:0.01/0.05/.../10> -Q <Query ID:1/2/../8>")
+            print("CollectTE.py -D <Database name> -s <scale:0.01/0.05/.../10> -Q <Query ID:1/2/../8>")
             sys.exit()
         elif opt in ("-Q", "--Query"):
             query_id = arg

@@ -14,15 +14,15 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hD:s:Q:",["Database=","scale=","Query="])
     except getopt.GetoptError:
-        print("CollectQueryResult.py -D <Databse name> -s <scale:0.01/0.05/.../10> -Q <Query ID:1/2/../8>")
+        print("CollectQueryResult.py -D <Database name> -s <scale:0.01/0.05/.../10> -Q <Query ID:1/2/../8>")
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print("CollectQueryResult.py -D <Databse name> -s <scale:0.01/0.05/.../10> -Q <Query ID:1/2/../8>")
+            print("CollectQueryResult.py -D <Database name> -s <scale:0.01/0.05/.../10> -Q <Query ID:1/2/../8>")
             sys.exit()
         elif opt in ("-Q", "--Query"):
             query_id = arg
-        elif opt in ("-s", "--cale"):
+        elif opt in ("-s", "--scale"):
             scale = arg
         elif opt in ("-D","--Database"):
             database_name = arg
