@@ -5,7 +5,7 @@ using namespace std;
 void PrintUserBooklet(string program_name)
 {
     cerr << "***********************************************************************************************\n"
-        << "* ESRSCalculator: Perform multi-dimension scaling for one large dataset with high dimension    *\n"
+        << "* ESRSCalculator: Calculating Elastic sensitivity/Residual sensitivity   *\n"
         << "* version: 1.0                                                                                 *\n"
         << "* For SIGMOD 2021 Paper Demo                                                  *\n"
         << "************************************************************************************************\n";
