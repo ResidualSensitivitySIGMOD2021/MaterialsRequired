@@ -1,0 +1,3 @@
+/Users/dongwei/Desktop/new_repository/demosystem/RSCalculator/CMakeFiles/rebuild_cache.dir
+/Users/dongwei/Desktop/new_repository/demosystem/RSCalculator/CMakeFiles/edit_cache.dir
+/Users/dongwei/Desktop/new_repository/demosystem/RSCalculator/CMakeFiles/RSCalculator.dir

@@ -1,3 +1,4 @@
+
 # Demo of Residual Sensitivity
 
 ## Table of Contents
@@ -14,14 +15,19 @@
     * [Collect Statistic for Table 1](#collect-statistic-for-table-1)
     * [Draw Figure 5](#draw-figure-5)
     * [Draw Figure 6](#draw-figure-6)
-    
+* [Demo System](#demo-system)
+* [Demo the Tests with wPINQ](#demo-the-tests-with-wpinq)
+    * [Experimental Results and Discussions](#experimental-results-and-discussions)
 
 ## About The Project
-We implement the algorithms to get residual sensitivity and elastic sensitivity for multi-way join query and we demo our implementations on 8 experimental queries as shown in our paper. Here, two datasets: TPC-H dataset and Facebook ego-network dataset are used. Here we provide codes to realize three main functions:
+First, we implement the algorithms to get residual sensitivity and elastic sensitivity for multi-way join query and we demo our implementations on 8 experimental queries as shown in our paper. Here, two datasets: TPC-H dataset and Facebook ego-network dataset are used. We provide codes to realize three main functions:
 
 + Import/Export data to/from database;
 + Demo the algorithm to compute residual sensitivity/elastic sensitivity given one query;
 + Demo how to collect experimental results shown in our paper;
+
+Second, we implement a complete system for residual sensitivity. Third, we test wPINQ with our experimental data.
+
 
 ## Prerequisites
 ### Tools
@@ -126,3 +132,47 @@ To draw figure 6, change the working directory to `./code` and run `DrawFig6Grap
 cd ./code
 python DrawFig6Graphs.py
 ```
+
+# Demo System
+Here, we implement a demo-system integrated with PostgreSQL. Currently, the system supports multi-way counting query without self-join. The inputs here are a query and a set of private parameters like priavcy budget and the list of private relations, and the output is a noised query result. The demo-system is stored in `./demosystem`.
+
+Before run the system, please import the data into a PostgreSQL database like `test`. You can import TPC-H/Facebook data as our previous instructions. Then, please compile the C++ code.
+```
+cd ./demosystem/RSCalculator
+cmake .
+make
+```
+Then, back to `./demosystem` and test the system. There are six parameters
+
+ - `-Q`: the path of input query file. Here, we provide 8 experimental queries in `./demosystem/demoquery`.
+ - `-P`: the path of file containing the list of private relations. Here, we provide those for 8 experimental queries in `./demosystem/demoquery`.
+ - `-e`: privacy budget $\epsilon$.
+ - `-d`: privacy budget $\delta$.
+ - `-N`: noise mechanism: `0` for Laplace noise, `1` for Cauchy noise.
+ - `-D`: the name of the PostgreSQL database. 
+
+For example, we run the system with `Q5`
+```
+python RunDemoSystem.py -Q ./demoquery/Q5.txt -P ./demoquery/Q5_private_relations.txt -e 1 -d 0.000000001 -N 0 -D test
+```
+Currently, we only implement part of optimizations for boundary query mentioned in our paper thus the running time for `Q3,Q5,Q7` will be very long. We will implement all of them in the next version, which will also support self-join queries.D
+
+# Demo the Tests with wPINQ
+Here, we also test the algorithm of wPINQ with 8 experimental queries with similar experimental setting with [previous work](http://www.vldb.org/pvldb/vol11/p526-johnson.pdf). 
+
+Before running the demo program, please import the data into a PostgreSQL database like `test`. Then, run the demo program with 
+```
+python DemowPINQ -D test -s 0.1
+```
+The `-D` is used to indicate database name while `-s` is used to indate data scale for TPC-H dataset.
+
+## Experimental Results and Discussions
+
+The wPINQ assigns weights to tuples. By scaling down the weights, it ensures any tuple has at most 1 sensitivity for the final counting results. The experimental results show wPINQ losses the utility in all 8 queries: in all cases, wPINQ returns a value less than 1% of the real query result.
+
+That is because of two factors. 
+ - The weights of tuples will be scaled down once when passing each join operation involving two private relations. Our queries at least involve three such joins.
+ - The wPINQ performs well in the case where most tuples affect no more than one query result or the case where tuples in the same relation have the same degree(counting triangles incident on vertices with fixed degrees). However, in our experiments, tuples join with a various number of tuples.
+
+It has been shown in the experiments of [previous work](http://www.vldb.org/pvldb/vol11/p526-johnson.pdf) that even in a query involving two relations, the wPINQ performs much worse than elastic sensitivity. 
+

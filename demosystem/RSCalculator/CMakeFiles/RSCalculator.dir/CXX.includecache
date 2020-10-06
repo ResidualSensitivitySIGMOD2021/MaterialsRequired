@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/dongwei/Desktop/new_repository/demosystem/RSCalculator/RSCalculator.cpp
+Residual.hpp
+/Users/dongwei/Desktop/new_repository/demosystem/RSCalculator/Residual.hpp
+
+/Users/dongwei/Desktop/new_repository/demosystem/RSCalculator/Residual.cpp
+Residual.hpp
+/Users/dongwei/Desktop/new_repository/demosystem/RSCalculator/Residual.hpp
+
+/Users/dongwei/Desktop/new_repository/demosystem/RSCalculator/Residual.hpp
+iostream
+-
+cstring
+-
+cmath
+-
+algorithm
+-
+fstream
+-
+
