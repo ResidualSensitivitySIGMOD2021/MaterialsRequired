@@ -17,7 +17,6 @@
     * [Draw Figure 6](#draw-figure-6)
 * [Demo System](#demo-system)
 * [Demo the Tests with wPINQ](#demo-the-tests-with-wpinq)
-    * [Experimental Results and Discussions](#experimental-results-and-discussions)
 
 ## About The Project
 First, we implement the algorithms to get residual sensitivity and elastic sensitivity for multi-way join query and we demo our implementations on 8 experimental queries as shown in our paper. Here, two datasets: TPC-H dataset and Facebook ego-network dataset are used. We provide codes to realize three main functions:
