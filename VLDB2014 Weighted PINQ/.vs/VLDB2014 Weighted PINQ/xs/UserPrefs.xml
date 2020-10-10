@@ -1,0 +1,38 @@
+﻿<Properties StartupConfiguration="{08F5E1CB-AFA7-44C6-8681-75BF165971E0}|Default">
+  <MonoDevelop.Ide.ItemProperties.VLDB2014_220Experiments PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Weighted PINQ/PINQCollection.cs">
+    <Files>
+      <File FileName="VLDB2014 Experiments/Program.cs" Line="256" Column="14" />
+      <File FileName="Weighted PINQ/BufferPool.cs" Line="1" Column="1" />
+      <File FileName="Weighted PINQ/Task.cs" Line="37" Column="37" />
+      <File FileName="Weighted PINQ/Weighted.cs" Line="24" Column="1" />
+      <File FileName="Weighted PINQ/PINQCollection.cs" Line="75" Column="48" />
+      <File FileName="Weighted PINQ/SubArray.cs" Line="26" Column="40" />
+      <File FileName="Weighted PINQ/Collection.cs" Line="33" Column="1" />
+      <File FileName="Weighted PINQ/Operators/Join.cs" Line="1" Column="1" />
+      <File FileName="Weighted PINQ/CollectionShard.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="VLDB2014 Weighted PINQ" expanded="True">
+            <Node name="VLDB2014 Experiments" expanded="True" />
+            <Node name="Weighted PINQ" expanded="True">
+              <Node name="Operators" expanded="True" />
+              <Node name="PINQCollection.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

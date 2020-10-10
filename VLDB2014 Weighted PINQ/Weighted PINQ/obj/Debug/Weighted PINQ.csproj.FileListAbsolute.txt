@@ -1,0 +1,7 @@
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/Weighted PINQ/bin/Debug/Weighted PINQ.dll.config
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/Weighted PINQ/bin/Debug/Weighted PINQ.dll
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/Weighted PINQ/bin/Debug/Weighted PINQ.pdb
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/Weighted PINQ/obj/Debug/Weighted PINQ.csprojAssemblyReference.cache
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/Weighted PINQ/obj/Debug/Weighted PINQ.csproj.CoreCompileInputs.cache
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/Weighted PINQ/obj/Debug/Weighted PINQ.dll
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/Weighted PINQ/obj/Debug/Weighted PINQ.pdb

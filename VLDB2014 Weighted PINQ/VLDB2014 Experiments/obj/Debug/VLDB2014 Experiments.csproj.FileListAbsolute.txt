@@ -1,0 +1,11 @@
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/bin/Debug/VLDB2014 Weighted PINQ.exe.config
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/bin/Debug/VLDB2014 Weighted PINQ.exe
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/bin/Debug/VLDB2014 Weighted PINQ.pdb
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/bin/Debug/Weighted PINQ.dll
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/bin/Debug/Weighted PINQ.pdb
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/bin/Debug/Weighted PINQ.dll.config
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/obj/Debug/VLDB2014 Experiments.csprojAssemblyReference.cache
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/obj/Debug/VLDB2014 Experiments.csproj.CoreCompileInputs.cache
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/obj/Debug/VLDB2014 Experiments.csproj.CopyComplete
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/obj/Debug/VLDB2014 Weighted PINQ.exe
+/Users/dongwei/Desktop/VLDB2014 Weighted PINQ/VLDB2014 Experiments/obj/Debug/VLDB2014 Weighted PINQ.pdb
