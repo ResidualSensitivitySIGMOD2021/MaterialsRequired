@@ -158,21 +158,11 @@ python RunDemoSystem.py -Q ./demoquery/Q5.txt -P ./demoquery/Q5_private_relation
 Currently, we only implement part of optimizations for boundary query mentioned in our paper thus the running time for `Q3,Q5,Q7` will be very long. We will implement all of them in the next version, which will also support self-join queries.D
 
 # Demo the Tests with wPINQ
-Here, we also test the algorithm of wPINQ with 8 experimental queries with similar experimental setting with [previous work](http://www.vldb.org/pvldb/vol11/p526-johnson.pdf). 
+Here, we also test the algorithm of wPINQ with 8 experimental queries with similar experimental setting with [previous work](http://www.vldb.org/pvldb/vol11/p526-johnson.pdf). We modify the wPINQ codes to support our experiments. The wPINQ is under `./VLDB2014 Weighted PINQ`.
 
-Before running the demo program, please import the data into a PostgreSQL database like `test`. Then, run the demo program with 
-```
-python DemowPINQ -D test -s 0.1
-```
-The `-D` is used to indicate database name while `-s` is used to indate data scale for TPC-H dataset.
+Before run wPINQ, 
+ - Download the testing data [here](https://drive.google.com/file/d/1IGONyHcVCHdK2EUfQ3eZJ46UIv2IBklL/view?usp=sharing). 
+ - Unzip the file. Make sure there is an directory named `InputData` now.
+ - Modify `./VLDB2014 Weighted PINQ/VLDB2014 Experiments/Program.cs`: in `13th` line, change that to the absolute path of `InputData`.
 
-## Experimental Results and Discussions
-
-The wPINQ assigns weights to tuples. By scaling down the weights, it ensures any tuple has at most 1 sensitivity for the final counting results. The experimental results show wPINQ losses the utility in all 8 queries: in all cases, wPINQ returns a value less than 1% of the real query result.
-
-That is because of two factors. 
- - The weights of tuples will be scaled down once when passing each join operation involving two private relations. Our queries at least involve three such joins.
- - The wPINQ performs well in the case where most tuples affect no more than one query result or the case where tuples in the same relation have the same degree(counting triangles incident on vertices with fixed degrees). However, in our experiments, tuples join with a various number of tuples.
-
-It has been shown in the experiments of [previous work](http://www.vldb.org/pvldb/vol11/p526-johnson.pdf) that even in a query involving two relations, the wPINQ performs much worse than elastic sensitivity. 
-
+Then, follow the [previous instructions](http://faculty.marshall.usc.edu/Davide-Proserpio/wPINQ.html) to run wPINQ. We adivce to use `Visual Studio` to run the project.
