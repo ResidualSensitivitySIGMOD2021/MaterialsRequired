@@ -1,7 +1,0 @@
-drop table edge1_w;
-drop table edge2_w;
-drop table edge3_w;
-drop table keyb_w1;
-drop table keyb_w2;
-drop table edge12_w;
-drop table edge123_w

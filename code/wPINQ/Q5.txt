@@ -1,8 +1,0 @@
-create table edge1_w as select edge1_from, edge1_to, 1 as weight from edge1;
-create table edge2_w as select edge2_from, edge2_to, 1 as weight from edge2;
-create table edge3_w as select edge3_from, edge3_to, 1 as weight from edge3;
-create table keyb_w1 as select edge1_to, sum(weight) as weight from edge1_w group by edge1_to;
-create table keyb_w2 as select edge2_from, sum(weight) as weight from edge2_w group by edge2_from;
-create table edge12_w as select edge1_from, edge2_to, sum(1.0*edge1_w.weight*edge2_w.weight/(keyb_w1.weight+keyb_w2.weight)) as weight from keyb_w1, keyb_w2, edge1_w, edge2_w where keyb_w1.edge1_to = keyb_w2.edge2_from and keyb_w1.edge1_to = edge2_w.edge2_from and edge2_w.edge2_from = edge1_w.edge1_to group by edge1_from, edge2_to;
-create table edge123_w as select 1.0*edge12_w.weight*edge3_w.weight/(edge12_w.weight+edge3_w.weight) as weight from edge12_w, edge3_w where edge12_w.edge1_from=edge3_w.edge3_to and edge12_w.edge2_to=edge3_w.edge3_from;
-select sum(weight) from edge123_w;
