@@ -1,4 +1,3 @@
-
 # Demo of Residual Sensitivity
 
 ## Table of Contents
@@ -133,7 +132,7 @@ python DrawFig6Graphs.py
 ```
 
 # Demo System
-Here, we implement a demo-system integrated with PostgreSQL. Currently, the system supports multi-way counting query without self-join. The inputs here are a query and a set of private parameters like priavcy budget and the list of private relations, and the output is a noised query result. The demo-system is stored in `./demosystem`.
+Here, we implement a demo system integrated with PostgreSQL. Currently, the system supports multi-way counting query with projection, predicate, and group-by but without self-joins. The inputs here are a counting query(without subqueries) and a set of private parameters like priavcy budget and the list of private relations, and the output is a noised query result(a noised histogram). The demo-system is stored in `./demosystem`.
 
 Before run the system, please import the data into a PostgreSQL database like `test`. You can import TPC-H/Facebook data as our previous instructions. Then, please compile the C++ code.
 ```
@@ -144,7 +143,7 @@ make
 Then, back to `./demosystem` and test the system. There are six parameters
 
  - `-Q`: the path of input query file. Here, we provide 8 experimental queries in `./demosystem/demoquery`.
- - `-P`: the path of file containing the list of private relations. Here, we provide those for 8 experimental queries in `./demosystem/demoquery`.
+ - `-P`: the path of file containing the list of private relations. Here, we provide 8 experimental queries in `./demosystem/demoquery`.
  - `-e`: privacy budget $\epsilon$.
  - `-d`: privacy budget $\delta$.
  - `-N`: noise mechanism: `0` for Laplace noise, `1` for Cauchy noise.
@@ -154,7 +153,9 @@ For example, we run the system with `Q5`
 ```
 python RunDemoSystem.py -Q ./demoquery/Q5.txt -P ./demoquery/Q5_private_relations.txt -e 1 -d 0.000000001 -N 0 -D test
 ```
-Currently, we only implement part of optimizations for boundary query mentioned in our paper thus the running time for `Q3,Q5,Q7` will be very long. We will implement all of them in the next version, which will also support self-join queries.D
+Here, we provide the 8 queries used in our paper as the demo queries. Besides, we also provide `Q1,Q2` after adding projection, predicate and group-by.
+
+Currently, we only implement part of optimizations for boundary query mentioned in our paper thus the running time for `Q3,Q5,Q7` will be a little bit long. We will implement all optimizations and supprt more complex queries(involving self-joins) in the next version.
 
 # Demo the Tests with wPINQ
 Here, we also test the algorithm of wPINQ with 8 experimental queries with similar experimental setting with [previous work](http://www.vldb.org/pvldb/vol11/p526-johnson.pdf). We modify the wPINQ codes to support our experiments. The wPINQ is under `./VLDB2014 Weighted PINQ`.

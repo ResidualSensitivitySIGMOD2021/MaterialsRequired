@@ -26,6 +26,9 @@ TE_dic= {}
 edges = np.zeros((0,0))
 attribute_in_edges = []
 noised_result = 0.0
+is_histogram = False
+histgram_keys = []
+histgram_values = []
 
 def ReadQuery():
     global query
@@ -38,8 +41,16 @@ def ReadQuery():
         
 def RunQuery(cur):
     global query_result
+    global histgram_keys
+    global histgram_values
     cur.execute(query)
-    query_result = int(cur.fetchone()[0])
+    if is_histogram==False:
+        query_result = int(cur.fetchone()[0])
+    else:
+        res = cur.fetchall()
+        for j in range(len(res)):
+            histgram_keys.append(res[j][0])
+            histgram_values.append(int(res[j][1]))
     
 def ReadRelationList():
     global private_relation_names
@@ -49,6 +60,12 @@ def ReadRelationList():
         private_relation_names.append(relation_name)
     
 def ExtractQueryInfo(cur):
+    global is_histogram
+    if " as " in query.lower():
+        print("Renaming is not supported currently.")
+        exit()
+    if " group by " in query.lower():
+        is_histogram = True 
     global relation_num
     global private_relation_num
     global relation_names
@@ -58,6 +75,7 @@ def ExtractQueryInfo(cur):
     parser_string = query.lower()
     parser_string = parser_string.replace(" from ","\n")
     parser_string = parser_string.replace(" where ","\n")
+    parser_string = parser_string.replace(" group by ","\n")
     parser_string = parser_string.replace(";","")
     parser_strings = parser_string.split("\n")
     relations_strings = parser_strings[1]
@@ -65,7 +83,6 @@ def ExtractQueryInfo(cur):
     relations_strings = relations_strings.replace(","," ")
     relation_names_t = relations_strings.split()
     relation_num = len(relation_names_t)
-    private_relation_num = len(private_relation_names)
     attributes_for_relation = []
     
     #Reorder the relations so public ones are in front
@@ -75,6 +92,7 @@ def ExtractQueryInfo(cur):
             relation_id_dic[relation_names_t[i]] = name_id
             relation_names.append(relation_names_t[i])
             name_id+=1
+    private_relation_num = relation_num - name_id
     for i in range(relation_num):
         if relation_names_t[i] in private_relation_names:
             relation_id_dic[relation_names_t[i]] = name_id
@@ -100,29 +118,46 @@ def ExtractQueryInfo(cur):
         attributes_for_relation.append(t_list)
     conditions = conditions_strings.split(" and ")   
     for i in range(len(conditions)):
+        #Whether is predicate
+        if "=" not in conditions[i]:
+            continue
+        if ("<=" in conditions[i]) or (">=" in conditions[i]) or ("!=" in conditions[i]):
+            continue
         terms = conditions[i].replace(" ","").split("=")
         left_relation = 0
         right_relation = 0
+        is_relation = False
         if "." in terms[0]:
             left = terms[0].split(".")
             left_relation = left[0]
             left_attribute = left[1]
+            is_relation = True
         else:
             left_attribute = terms[0]
             for j in range(relation_num):
                 if left_attribute in attributes_for_relation[j]:
                     left_relation = relation_names[j]
+                    is_relation = True
                     break
+        #If is predicate
+        if is_relation==False:
+            continue
+        is_relation = False
         if "." in terms[1]:
             right = terms[1].split(".")
             right_relation = right[0]
             right_attribute = right[1]
+            is_relation = True
         else:
             right_attribute = terms[1]
             for j in range(relation_num):
                 if right_attribute in attributes_for_relation[j]:
                     right_relation = relation_names[j]
+                    is_relation = True
                     break
+        #If is predicate
+        if is_relation==False:
+            continue
         edges[relation_id_dic[left_relation]][relation_id_dic[right_relation]] = 1
         edges[relation_id_dic[right_relation]][relation_id_dic[left_relation]] = 1
         attribute_in_edges[relation_id_dic[left_relation]][relation_id_dic[right_relation]].append(left_attribute)
@@ -345,12 +380,12 @@ def main(argv):
         
     #Read query
     ReadQuery()
-    #Run the query
-    RunQuery(cur)
     #Read the list of private relations
     ReadRelationList()
     #Extract the information from query
     ExtractQueryInfo(cur)
+    #Run the query
+    RunQuery(cur)
     #Compute TEs
     cur_E = ""
     for i in range(relation_num-private_relation_num):
@@ -360,17 +395,22 @@ def main(argv):
     OutputTEs(cur_path+"/TE.txt")
     #Calculate RS
     CalRS(cur_path,beta)
-    if noise_mechanism ==0:
-        noised_result = query_result+residual_sensitivity*2/epsilon*LapNoise()
-    else:
-        noised_result = query_result+residual_sensitivity*10/epsilon*CauNoise()
     #Delete tempoaray file
     cmd = "rm "+cur_path+"/TE.txt"
     shell = os.popen(cmd, 'r')
     shell.close()
-    print(noised_result)
-    
+    if is_histogram:
+        for i in range(len(histgram_keys)):
+            if noise_mechanism ==0:
+                noised_result = histgram_values[i]+residual_sensitivity*2/epsilon*LapNoise()
+            else:
+                noised_result = histgram_values[i]+residual_sensitivity*10/epsilon*CauNoise()
+            print(histgram_keys[i],noised_result)
+    else:
+        if noise_mechanism ==0:
+            noised_result = query_result+residual_sensitivity*2/epsilon*LapNoise()
+        else:
+            noised_result = query_result+residual_sensitivity*10/epsilon*CauNoise()
+        print(noised_result)
 if __name__ == "__main__":
    main(sys.argv[1:])
-   
-   
