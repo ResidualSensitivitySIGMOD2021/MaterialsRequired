@@ -29,6 +29,7 @@ noised_result = 0.0
 is_histogram = False
 histgram_keys = []
 histgram_values = []
+uniary_predicate = []
 
 def ReadQuery():
     global query
@@ -56,6 +57,7 @@ def ReadRelationList():
     global private_relation_names
     private_relation_list_file = open(private_relation_list_path,'r')
     for line in private_relation_list_file.readlines():
+        line = line.lower()
         relation_name = line.replace('\n',"")
         private_relation_names.append(relation_name)
     
@@ -72,6 +74,7 @@ def ExtractQueryInfo(cur):
     global relation_id_dic 
     global edges
     global attribute_in_edges
+    global uniary_predicate
     parser_string = query.lower()
     parser_string = parser_string.replace(" from ","\n")
     parser_string = parser_string.replace(" where ","\n")
@@ -116,48 +119,106 @@ def ExtractQueryInfo(cur):
         for j in range(len(res)):
             t_list.append(res[j][0])
         attributes_for_relation.append(t_list)
+    
+    #Initialize the uniary predicates for each relation
+    for i in range(relation_num):
+        l1 = []
+        uniary_predicate.append(l1)
+        
     conditions = conditions_strings.split(" and ")   
     for i in range(len(conditions)):
+        conditions[i] = conditions[i].replace(" ","")
+        origin_condition = conditions[i]
+        is_equal_condition = True
+        
+        #Check whether inequal or unequal
+        if ("<=" in conditions[i]) or (">=" in conditions[i]) or ("!=" in conditions[i]):
+            conditions[i] = conditions[i].replace("<=","=")
+            conditions[i] = conditions[i].replace(">=","=")
+            conditions[i] = conditions[i].replace("!=","=")
+            is_equal_condition = False
+        
+        if ("<" in conditions[i]) or (">" in conditions[i]):
+            conditions[i] = conditions[i].replace("<","=")
+            conditions[i] = conditions[i].replace(">","=")
+            is_equal_condition = False
+        
         #Whether is predicate
         if "=" not in conditions[i]:
             continue
-        if ("<=" in conditions[i]) or (">=" in conditions[i]) or ("!=" in conditions[i]):
-            continue
+        
         terms = conditions[i].replace(" ","").split("=")
-        left_relation = 0
-        right_relation = 0
-        is_relation = False
+        left_relation = ""
+        right_relation = ""
+        left_attribute = ""
+        right_attribute = ""
+        left_is_relation = False
+        right_is_relation = False
+
         if "." in terms[0]:
             left = terms[0].split(".")
             left_relation = left[0]
             left_attribute = left[1]
-            is_relation = True
+            left_is_relation = True
         else:
             left_attribute = terms[0]
             for j in range(relation_num):
                 if left_attribute in attributes_for_relation[j]:
-                    left_relation = relation_names[j]
-                    is_relation = True
+                    left_is_relation = True
                     break
-        #If is predicate
-        if is_relation==False:
-            continue
-        is_relation = False
+        
         if "." in terms[1]:
             right = terms[1].split(".")
             right_relation = right[0]
             right_attribute = right[1]
-            is_relation = True
+            right_is_relation = True
         else:
             right_attribute = terms[1]
             for j in range(relation_num):
                 if right_attribute in attributes_for_relation[j]:
-                    right_relation = relation_names[j]
-                    is_relation = True
+                    right_is_relation = True
                     break
-        #If is predicate
-        if is_relation==False:
+                
+        #If both side are not attributes
+        if left_is_relation==False and right_is_relation==False:
             continue
+        
+        #If only left side is
+        if left_is_relation==True and right_is_relation==False:
+            #If not having relation
+            if left_relation == "":
+                for j in range(relation_num):
+                    if left_attribute in attributes_for_relation[j]:
+                        uniary_predicate[j].append(origin_condition)
+            else:
+                uniary_predicate[relation_id_dic[left_relation]].append(origin_condition)
+            continue
+        
+        #If only right side is
+        if right_is_relation==True and left_is_relation==False:
+            #If not having relation
+            if right_relation =="":
+                for j in range(relation_num):
+                    if right_attribute in attributes_for_relation[j]:
+                        uniary_predicate[j].append(origin_condition)
+            else:
+                uniary_predicate[relation_id_dic[right_relation]].append(origin_condition)
+            continue
+        
+        #If involve two relations and are not equal condition
+        if is_equal_condition==False:
+            continue
+             
+        if left_relation == "":
+            for j in range(relation_num):
+                if left_attribute in attributes_for_relation[j]:
+                    left_relation = relation_names[j]
+                    break
+        if right_relation == "":
+            for j in range(relation_num):
+                if right_attribute in attributes_for_relation[j]:
+                    right_relation = relation_names[j]
+                    break
         edges[relation_id_dic[left_relation]][relation_id_dic[right_relation]] = 1
         edges[relation_id_dic[right_relation]][relation_id_dic[left_relation]] = 1
         attribute_in_edges[relation_id_dic[left_relation]][relation_id_dic[right_relation]].append(left_attribute)
@@ -228,6 +289,11 @@ def CompTE(cur_E,cur):
                         for k in range(len(attribute_in_edges[i][j])):
                             select_conditions.append(relation_names[i]+"."+attribute_in_edges[i][j][k]+"="+relation_names[j]+"."+attribute_in_edges[j][i][k])
 
+        for i in party:
+            for j in uniary_predicate[i]:
+                select_conditions.append(j)
+            
+
         first_part = "select "
         for attribute in attributes:
             first_part = first_part+attribute+", "
@@ -263,7 +329,7 @@ def CompTE(cur_E,cur):
                 fourth_part=fourth_part+", "+attribute
                 
         residual_query = left_part+first_part+second_part
-        if len(party)>1:
+        if len(select_conditions)>=1:
             residual_query = residual_query+third_part
         residual_query = residual_query+fourth_part+right_part
         cur.execute(residual_query)
@@ -412,5 +478,6 @@ def main(argv):
         else:
             noised_result = query_result+residual_sensitivity*10/epsilon*CauNoise()
         print(noised_result)
+        
 if __name__ == "__main__":
    main(sys.argv[1:])
