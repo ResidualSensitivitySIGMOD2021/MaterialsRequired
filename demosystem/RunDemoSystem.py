@@ -7,6 +7,8 @@ import getopt
 import math
 import random
 
+
+
 epsilon = 1
 delta = 10**(-6)
 database_name = ""
@@ -31,6 +33,8 @@ histgram_keys = []
 histgram_values = []
 uniary_predicate = []
 
+
+
 def ReadQuery():
     global query
     query_file = open(query_path,'r')
@@ -39,6 +43,8 @@ def ReadQuery():
         if ";" in query:
             query = query.replace('\n'," ")
             break
+        
+        
         
 def RunQuery(cur):
     global query_result
@@ -52,7 +58,9 @@ def RunQuery(cur):
         for j in range(len(res)):
             histgram_keys.append(res[j][0])
             histgram_values.append(int(res[j][1]))
-    
+
+
+
 def ReadRelationList():
     global private_relation_names
     private_relation_list_file = open(private_relation_list_path,'r')
@@ -60,6 +68,8 @@ def ReadRelationList():
         line = line.lower()
         relation_name = line.replace('\n',"")
         private_relation_names.append(relation_name)
+ 
+    
     
 def ExtractQueryInfo(cur):
     global is_histogram
@@ -223,6 +233,8 @@ def ExtractQueryInfo(cur):
         edges[relation_id_dic[right_relation]][relation_id_dic[left_relation]] = 1
         attribute_in_edges[relation_id_dic[left_relation]][relation_id_dic[right_relation]].append(left_attribute)
         attribute_in_edges[relation_id_dic[right_relation]][relation_id_dic[left_relation]].append(right_attribute)  
+   
+    
     
 def CompTEs(cur_E,cur_id,cur):
     if cur_id==relation_num:
@@ -230,6 +242,8 @@ def CompTEs(cur_E,cur_id,cur):
     else:
         CompTEs(cur_E+"0",cur_id+1,cur)
         CompTEs(cur_E+"1",cur_id+1,cur)
+
+
 
 def CompTE(cur_E,cur):
     global TE_dic
@@ -251,7 +265,6 @@ def CompTE(cur_E,cur):
     while left_relations_num>0:
         party = []
         neighbors = []
-        
         ind_new = True
         while ind_new:
             ind_new = False
@@ -280,7 +293,8 @@ def CompTE(cur_E,cur):
                 if (i in party) and (j not in party) and edges[i][j] == 1:
                     for k in range(len(attribute_in_edges[i][j])):
                         attributes.append(relation_names[i]+"."+attribute_in_edges[i][j][k])
-                    
+        
+        #Add the equal condition
         select_conditions = []
         for i in range(relation_num):
             for j in range(relation_num):
@@ -288,12 +302,12 @@ def CompTE(cur_E,cur):
                     if (i in party) and (j in party) and edges[i][j] == 1:
                         for k in range(len(attribute_in_edges[i][j])):
                             select_conditions.append(relation_names[i]+"."+attribute_in_edges[i][j][k]+"="+relation_names[j]+"."+attribute_in_edges[j][i][k])
-
+        
+        #Add the uniary condition
         for i in party:
             for j in uniary_predicate[i]:
                 select_conditions.append(j)
             
-
         first_part = "select "
         for attribute in attributes:
             first_part = first_part+attribute+", "
@@ -338,6 +352,8 @@ def CompTE(cur_E,cur):
         TE*=TE_t
     TE_dic[cur_E] = TE
 
+
+
 def OutputTEs(TE_output_path):
     TE_results = open(TE_output_path,'w')
     for E in TE_dic.keys():
@@ -345,6 +361,8 @@ def OutputTEs(TE_output_path):
         intE = intE+1-1
         TE_results.write(str(intE)+" "+str(TE_dic[E])+"\n")
     TE_results.close()
+
+
 
 def CalRS(cur_path,beta):
     global residual_sensitivity
@@ -361,6 +379,8 @@ def CalRS(cur_path,beta):
     residual_sensitivity = float(res[0])
     shell.close()
 
+
+
 def LapNoise():
     a = random.uniform(0,1)
     b = math.log(1/(1-a))
@@ -369,11 +389,15 @@ def LapNoise():
         return b
     else:
         return -b
+ 
+    
     
 def CauchyCum(x):
     a = 1/4/math.sqrt(2)*(math.log(abs(2*x**2+2*math.sqrt(2)*x+2))+2*math.atan(math.sqrt(2)*x+1))
     a += 1/4/math.sqrt(2)*(-math.log(abs(2*x**2-2*math.sqrt(2)*x+2))+2*math.atan(math.sqrt(2)*x-1))
     return a
+
+
 
 def CauNoise():
     a = random.uniform(0,math.pi/2/math.sqrt(2))
@@ -391,6 +415,8 @@ def CauNoise():
         return mid
     else:
         return -mid
+
+
 
 def main(argv):
     global epsilon
@@ -452,6 +478,14 @@ def main(argv):
     ExtractQueryInfo(cur)
     #Run the query
     RunQuery(cur)
+    #If histogram
+    #We need to change the beta
+    if is_histogram:
+        if noise_mechanism==0:
+            beta /= (len(histgram_keys))
+        else:
+            beta /= math.sqrt(len(histgram_keys))
+    
     #Compute TEs
     cur_E = ""
     for i in range(relation_num-private_relation_num):
@@ -478,6 +512,8 @@ def main(argv):
         else:
             noised_result = query_result+residual_sensitivity*10/epsilon*CauNoise()
         print(noised_result)
-        
+ 
+
+       
 if __name__ == "__main__":
    main(sys.argv[1:])
